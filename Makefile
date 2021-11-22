@@ -9,11 +9,15 @@ OBJ = $(patsubst %.c,%.o,$(SRC))
 lite: $(OBJ)
 	$(CC) -o lite $(OBJ) $(CFLAGS) $(LDFLAGS)
 
+src/rencache.o: src/rencache.h src/renderer.h
+src/renderer.o: src/renderer.h
+src/api/api.o: src/api/api.h
+src/api/renderer.o: src/renderer.h src/rencache.h src/api/api.h
+src/api/renderer_font.o: src/api/api.h src/renderer.h src/rencache.h
+src/api/system.o: src/api/api.h src/rencache.h
+
 lua:
 	make -C deps/lua a
-
-%.o: %.c
-	$(CC) -c -o $@ $< $(CFLAGS)
 
 clean:
 	rm lite $(OBJ)
